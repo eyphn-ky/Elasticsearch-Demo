@@ -11,11 +11,11 @@ namespace Elasticsearch.API.Repository
         {
             _client=client;
         }
-
+        //id değerini client tarafında set edip dbye yollamak performans açısından daha iyi olacaktır.
         public async Task<Product?> SaveAsync(Product newProduct)
         {
             newProduct.Created=DateTime.Now;
-            var response = await _client.IndexAsync(newProduct,x=>x.Index("products"));
+            var response = await _client.IndexAsync(newProduct,x=>x.Index("products").Id(Guid.NewGuid().ToString()));
             
             //fast fail yöntemi mümkün olduğunca else'lerden kurtul.
             if(!response.IsValid) return null;
