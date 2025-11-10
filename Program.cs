@@ -1,9 +1,6 @@
-
-using Elasticsearch.Net;
 using Elasticsearch.API.Extensions;
-using Nest;
-using Elasticsearch.API.Services;
 using Elasticsearch.API.Repository;
+using Elasticsearch.API.Services;
 
 namespace Elasticsearch.API
 {

@@ -1,14 +1,9 @@
 ﻿using Elasticsearch.API.DTOs;
 
-using Nest;
-
 namespace Elasticsearch.API.Models
 {
     public class Product
     {
-        //elasticsearchte id değerleri metadatada tutulur. Dolayısıyla idnin metadataki id değeri olmasını sağlama için veririz.
-        //vermezsek normal bir property olarak anlaşılır.
-        [PropertyName("_id")]
         public string Id { get; set; } = null!; //not null
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
