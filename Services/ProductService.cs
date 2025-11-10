@@ -8,9 +8,11 @@ namespace Elasticsearch.API.Services
     public class ProductService
     {
         private readonly ProductRepository _productrepository;
-        public ProductService(ProductRepository productrepository)
+        private readonly ILogger<ProductService> _logger;
+        public ProductService(ProductRepository productrepository, ILogger<ProductService> logger)
         {
             _productrepository = productrepository;
+            _logger = logger;
         }
 
         public async Task<ResponseDto<ProductDto>> SaveAsync(ProductCreateDto request)
@@ -74,11 +76,18 @@ namespace Elasticsearch.API.Services
 
         public async Task<ResponseDto<bool>> DeleteAsync(string id)
         {
-            var isSuccess = await _productrepository.DeleteAsync(id);
-            if (!isSuccess)
+            var deleteResponse = await _productrepository.DeleteAsync(id);
+            if(!deleteResponse.IsValid && deleteResponse.Result == Nest.Result.NotFound)
             {
+                return ResponseDto<bool>.Fail(new List<string> { "Silinecek ürün bulunamadı" }, HttpStatusCode.NotFound);
+            }
+            if (!deleteResponse.IsValid)
+            {
+                _logger.LogError(deleteResponse.OriginalException, deleteResponse.ServerError.Error.ToString());
+
                 return ResponseDto<bool>.Fail(new List<string> { "Delete işlemi sırasında bir hata oluştu" }, HttpStatusCode.InternalServerError);
             }
+
             return ResponseDto<bool>.Success(true, HttpStatusCode.NoContent);
         }
     }
