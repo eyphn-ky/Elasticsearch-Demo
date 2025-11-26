@@ -17,7 +17,7 @@ namespace Elasticsearch.API.Controllers
         [HttpGet]
         public async Task<IActionResult> TermQuery(string customerFirstName)
         {
-            return Ok( await _repository.TermQueryAsync(customerFirstName));
+            return Ok(await _repository.TermQueryAsync(customerFirstName));
         }
 
         [HttpPost]
@@ -45,14 +45,46 @@ namespace Elasticsearch.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> PaginationQuery(int page = 1, int pageSize= 3)
+        public async Task<IActionResult> PaginationQuery(int page = 1, int pageSize = 3)
         {
-            return Ok(await _repository.PaginationQueryAsync(page,pageSize));
+            return Ok(await _repository.PaginationQueryAsync(page, pageSize));
         }
+
         [HttpGet]
         public async Task<IActionResult> WildCardQuery(string customerFullName)
         {
             return Ok(await _repository.WildCardQueryAsync(customerFullName));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FuzzyQuery(string customerFirstName)
+        {
+            return Ok(await _repository.FuzzyQueryAsync(customerFirstName));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MatchAllFullTextQuery(string category)
+        {
+            return Ok(await _repository.MatchAllFullTextQueryAsync(category));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MatchBoolPrefixQuery(string customerFullName)
+        {
+            return Ok(await _repository.MatchBoolPrefixFullTextQueryAsync(customerFullName));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MatchPhraseQuery(string customerFullName)
+        {
+            return Ok(await _repository.MatchPhraseFullTextQueryAsync(customerFullName));
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CompoundQueryExampleOne(string cityName, double taxfulTotalPrice, string categoryName, string manufacturer)
+        {
+            return Ok(await _repository.CompoundQueryExampleOneAsync(cityName, taxfulTotalPrice, categoryName, manufacturer));
         }
     }
 }
